@@ -9,7 +9,7 @@
 
 #include "UxAS_ConfigurationManager.h"
 
-#if defined(USE_GEO_LIBS)
+#if defined(AFRL_INTERNAL_ENABLED) && defined(USE_GEO_LIBS)
 #include "GroundHeight.h"   // utility function that needs dted configuration file names form the cfg file
 #endif
 
@@ -26,6 +26,7 @@
 #include <sstream>
 #include <unordered_map>
 #include <set>
+#include <cstdint>
 
 #if (defined(__APPLE__) && defined(__MACH__))
 #define OSX
@@ -44,8 +45,7 @@ namespace common
 
 bool ConfigurationManager::s_isZeroMqMultipartMessage{false};
 uint32_t ConfigurationManager::s_serialPortWaitTime_ms = 50;
-int32_t ConfigurationManager::s_zeroMqReceiveSocketPollWaitTime_ms = 1;
-//int32_t ConfigurationManager::s_zeroMqReceiveSocketPollWaitTime_ms = 0;
+int32_t ConfigurationManager::s_zeroMqReceiveSocketPollWaitTime_ms = 100;
 
 int64_t ConfigurationManager::s_entityStartTimeSinceEpoch_ms = 0;
 uint32_t ConfigurationManager::s_startDelay_ms = 0;
@@ -150,7 +150,9 @@ ConfigurationManager::loadXml(const std::string& xml, bool isFile, bool isBaseXm
         {
             isSuccess = false;
         }
+#ifdef AFRL_INTERNAL_ENABLED
         loadUtilityValuesFromXmlNode(m_baseXmlDoc.root());
+#endif
     }
 
     if (isSuccess)
@@ -420,7 +422,7 @@ void ConfigurationManager::loadUtilityValuesFromXmlNode(const pugi::xml_node& xm
     {
         for (auto currentXmlNode = xmlUxasNode.first_child(); currentXmlNode; currentXmlNode = currentXmlNode.next_sibling())
         {
-#if defined(USE_GEO_LIBS)
+#if defined(AFRL_INTERNAL_ENABLED) && defined(USE_GEO_LIBS)
             if ((std::string(currentXmlNode.name()) == std::string("Utility"))
                     && (!currentXmlNode.attribute("Type").empty()) &&
                     (currentXmlNode.attribute("Type").value() == std::string("DtedLookup")))
@@ -709,3 +711,4 @@ void ConfigurationManager::loadUtilityValuesFromXmlNode(const pugi::xml_node& xm
 
 }; //namespace common
 }; //namespace uxas
+
