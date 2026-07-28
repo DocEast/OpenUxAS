@@ -64,6 +64,17 @@ jobs:
                   cd OpenUxAS
                   ./anod -v build ${{ matrix.component }} --qualifier=${{ matrix.qualifier}}
 
+            - name: Show compile flags used in gcov build
+              run: |
+                   cd OpenUxAS/infrastructure/sbx/x86_64-linux/uxas-gcov/build
+                   echo "=== Dumping compile commands ==="
+                   if [ -f compile_commands.json ]; then
+                      cat compile_commands.json
+                   else
+                      echo "compile_commands.json not found; listing all .cmd files"
+                      find . -name "*.cmd" -exec sh -c 'echo "--- {} ---"; cat "{}"' \;
+                   fi
+
             - name: Test OpenUxAS C++
               run: |
                   cd OpenUxAS/tests/cpp
