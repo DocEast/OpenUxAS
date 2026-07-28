@@ -74,8 +74,7 @@ ifeq ($(ENABLE_COVERAGE),true)
     # These flags shouldn't break .gcno generation in existing  GCC 13/14 builds
     # GCC 15 enables LTO + aggressive inlining by default,
     # which suppresses .gcno generation unless explicitly disabled.
-    CXX_FLAGS+=-O0 -fno-inline -fno-lto
-    LDFLAGS+=-fno-lto --coverage
+    CXX_FLAGS+=-O0 -fno-inline -fno-lto --coverage
     # ----------------------------------------
 endif
 
