@@ -69,6 +69,14 @@ endif
 # Enable coverage with gcov
 ifeq ($(ENABLE_COVERAGE),true)
     CXX_FLAGS+=-fprofile-arcs -ftest-coverage -DGCOV_MODE=1
+
+    # --- FIX FOR GCC 15.2 ON UBUNTU 26.04 (git's setup)---
+    # These flags shouldn't break .gcno generation in existing  GCC 13/14 builds
+    # GCC 15 enables LTO + aggressive inlining by default,
+    # which suppresses .gcno generation unless explicitly disabled.
+    CXX_FLAGS+=-O0 -fno-inline -fno-lto
+    LDFLAGS+=-fno-lto --coverage
+    # ----------------------------------------
 endif
 
 # Linker flags
