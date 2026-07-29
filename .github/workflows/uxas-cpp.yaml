@@ -64,6 +64,20 @@ jobs:
                   cd OpenUxAS
                   ./anod -v build ${{ matrix.component }} --qualifier=${{ matrix.qualifier}}
 
+            - name: Show compile commands for visilibity.cpp
+              run: |
+                  echo "=== Searching for visilibity.o build logs ==="
+                  find OpenUxAS/infrastructure/sbx/x86_64-linux/uxas-gcov/build -name "visilibity.o" -exec sh -c '
+                  echo "--- Found object: {} ---"
+                  echo "Trying to reconstruct compile command..."
+                  # Show the dependency file if it exists
+                  depfile="{}.d"
+                  if [ -f "$depfile" ]; then
+                      echo "--- Dependency file ---"
+                      cat "$depfile"
+                  fi
+                  ' \;
+
             - name: Test OpenUxAS C++
               run: |
                   cd OpenUxAS/tests/cpp
