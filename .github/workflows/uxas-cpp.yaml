@@ -78,10 +78,14 @@ jobs:
                   fi
                   ' \;
 
-            - name: Force verbose build for visilibity.cpp (Deleteme)
-              run: |
+            - name: Force verbose rebuild of visilibity.cpp
+              run: | 
                   cd OpenUxAS
-                  make DEBUG_BUILD=true ENABLE_COVERAGE=true OBJECT_DIR=infrastructure/sbx/x86_64-linux/uxas-gcov/build src/cpp/VisilibityLib/visilibity.o
+                  rm -f infrastructure/sbx/x86_64-linux/uxas-gcov/build/src/cpp/VisilibityLib/visilibity.o
+                  rm -f infrastructure/sbx/x86_64-linux/uxas-gcov/build/src/cpp/VisilibityLib/visilibity.gcno
+                  make DEBUG_BUILD=true ENABLE_COVERAGE=true \
+                   OBJECT_DIR=infrastructure/sbx/x86_64-linux/uxas-gcov/build \
+                   src/cpp/VisilibityLib/visilibity.o
 
             - name: Test OpenUxAS C++
               run: |
