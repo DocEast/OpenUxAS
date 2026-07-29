@@ -78,7 +78,7 @@ jobs:
                   fi
                   ' \;
 
-            - name: Force verbose rebuild of visilibity.cpp
+            - name: Force verbose rebuild of visilibity.cpp (Deleteme)
               run: | 
                   cd OpenUxAS
                   rm -f infrastructure/sbx/x86_64-linux/uxas-gcov/build/src/cpp/VisilibityLib/visilibity.o
