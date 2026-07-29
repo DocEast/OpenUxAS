@@ -76,6 +76,10 @@ ifeq ($(ENABLE_COVERAGE),true)
     # which suppresses .gcno generation unless explicitly disabled.
     CXX_FLAGS+=-O0 -fno-inline -fno-lto --coverage
     # ----------------------------------------
+	# Prevent GCC 15.2 from optimizing away tiny TUs like VisiLibity
+    CXX_FLAGS+=-fno-ipa-cp -fno-ipa-sra -fno-ipa-icf -fno-ipa-ra -fno-ipa-pure-const
+    CXX_FLAGS+=-fno-tree-dce -fno-tree-dominator-opts -fno-tree-fre -fno-tree-sra
+	# ----------------------------------------
 endif
 
 # Linker flags
