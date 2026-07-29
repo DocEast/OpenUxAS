@@ -64,7 +64,7 @@ jobs:
                   cd OpenUxAS
                   ./anod -v build ${{ matrix.component }} --qualifier=${{ matrix.qualifier}}
 
-            - name: Show compile commands for visilibity.cpp
+            - name: Show compile commands for visilibity.cpp (Deleteme)
               run: |
                   echo "=== Searching for visilibity.o build logs ==="
                   find OpenUxAS/infrastructure/sbx/x86_64-linux/uxas-gcov/build -name "visilibity.o" -exec sh -c '
@@ -77,6 +77,11 @@ jobs:
                       cat "$depfile"
                   fi
                   ' \;
+
+            - name: Force verbose build for visilibity.cpp (Deleteme)
+              run: |
+                  cd OpenUxAS
+                  make DEBUG_BUILD=true ENABLE_COVERAGE=true OBJECT_DIR=infrastructure/sbx/x86_64-linux/uxas-gcov/build src/cpp/VisilibityLib/visilibity.o
 
             - name: Test OpenUxAS C++
               run: |
