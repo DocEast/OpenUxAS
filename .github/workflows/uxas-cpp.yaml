@@ -38,7 +38,7 @@ jobs:
             - uses: actions/checkout@v4
               with:
                   path: OpenUxAS
-            - name: Check GCC version
+            - name: Check GCC version (Deleteme)
               run: |
                     gcc --version
                     g++ --version
