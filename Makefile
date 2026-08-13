@@ -70,25 +70,19 @@ endif
 ifeq ($(ENABLE_COVERAGE),true)
     CXX_FLAGS+=-fprofile-arcs -ftest-coverage -DGCOV_MODE=1
 
-    # Disable optimization and LTO
+    # --- FIX FOR GCC 15.2 ON UBUNTU 26.04 (git's setup)---
+    # These flags shouldn't break .gcno generation in existing  GCC 13/14 builds
+    # GCC 15 enables LTO + aggressive inlining by default,
+    # which suppresses .gcno generation unless explicitly disabled.
     CXX_FLAGS+=-O0 -fno-inline -fno-lto --coverage
-
-    # Disable GCC 15 IPA passes
+    # ----------------------------------------
+	# Prevent GCC 15.2 from optimizing away tiny TUs like VisiLibity
     CXX_FLAGS+=-fno-ipa-cp -fno-ipa-sra -fno-ipa-icf -fno-ipa-ra -fno-ipa-pure-const
-
-    # Disable GCC 15 tree optimizations
     CXX_FLAGS+=-fno-tree-dce -fno-tree-dominator-opts -fno-tree-fre -fno-tree-sra
-
-    # Disable GCC 15 hardening defaults (required for .gcno emission)
-    CXX_FLAGS+=-fno-stack-protector
-    CXX_FLAGS+=-fcf-protection=none
-    CXX_FLAGS+=-fno-zero-call-used-regs
-    CXX_FLAGS+=-ftrivial-auto-var-init=uninitialized
-    CXX_FLAGS+=-fno-omit-frame-pointer
-
-    # Linker hardening also suppresses .gcno unless disabled
-    LINKER_FLAGS+=-fno-stack-protector -fcf-protection=none
+	# ----------------------------------------
 endif
+
+This is the current state of the Makefile.  Is anything missing from your cxx flags?
 
 
 # Linker flags
